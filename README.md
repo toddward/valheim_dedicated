@@ -15,6 +15,13 @@ If you have existing world files, copy them into Valheim/worlds directory before
 
 Change the arguments used in `valheim-scripts/runvalheim.sh` to suit your server details.
 
+## Building the container
+To build the container:
+```bash
+docker build . -t localhost/kylesawesomebuild
+```
+Follow other guides of how to publish to your own repo.
+
 ## Start the container
 To start the container and then detach (recommended):
 ```
@@ -23,6 +30,14 @@ docker run -d -p 2456:2456/udp -p 2457:2457/udp -p 2458:2458/udp -v $(pwd)/valhe
 If you want to enter the container interactively for debug:
 ```
 docker run -it -p 2456:2456/udp -p 2457:2457/udp -p 2458:2458/udp -v $(pwd)/valheim-data:/home/steam/valheim/ -v $(pwd)/valheim-scripts:/home/steam/valheim-scripts/ -v $(pwd)/Valheim:/root/.config/unity3d/IronGate/Valheim/ --name=valheim-dedicated cm2network/steamcmd:root bash
+```
+If you've built the container locally:
+```bash
+docker run -d \
+-v $(pwd)/valheim-data:/home/steam/valheim/ \
+-v $(pwd)/Valheim:/home/steam/.config/unity3d/IronGate/Valheim/ \
+--name=valheim-dedicated \
+localhost/valheim
 ```
 
 ## Stopping and starting the container
