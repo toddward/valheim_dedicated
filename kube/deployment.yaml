@@ -1,0 +1,74 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name:  valheim-dedicated
+  namespace: default
+  labels:
+    app:  valheim-dedicated
+spec:
+  selector:
+    matchLabels:
+      app: valheim-dedicated
+  replicas: 1
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app:  valheim-dedicated
+    spec:
+      # initContainers:
+        # Init containers are exactly like regular containers, except:
+          # - Init containers always run to completion.
+          # - Each init container must complete successfully before the next one starts.
+      containers:
+      - name:  valheim-dedicated
+        image:  registry.digitalocean.com/toddward/valheim:latest
+        resources:
+          # These will need to be adjusted
+          requests:
+            cpu: 100m
+            memory: 100Mi
+          limits:
+            cpu: 100m
+            memory: 100Mi
+        # livenessProbe:
+        #   tcpSocket:
+        #     port: 80
+        #   initialDelaySeconds: 5
+        #   timeoutSeconds: 5
+        #   successThreshold: 1
+        #   failureThreshold: 3
+        #   periodSeconds: 10
+        # readinessProbe:
+        #   httpGet:
+        #     path: /_status/healthz
+        #     port: 80
+        #   initialDelaySeconds: 5
+        #   timeoutSeconds: 2
+        #   successThreshold: 1
+        #   failureThreshold: 3
+        #   periodSeconds: 10
+        ports:
+        - containerPort:  2456
+          name:  valheim-dedicated-1
+        - containerPort:  2457
+          name:  valheim-dedicated-2
+        - containerPort:  2458
+          name:  valheim-dedicated-3
+        volumeMounts:
+        - name: data
+          mountPath: "/home/steam/valheim/"
+        - name: valheim
+          mountPath: "/home/steam/.config/unity3d/IronGate/Valheim/"
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: temp
+        - name: valheim
+          persistentVolumeClaim:
+            claimName: temp2
+      restartPolicy: Always
