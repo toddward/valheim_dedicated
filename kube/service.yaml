@@ -1,0 +1,18 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name:  Valheim-dedicated-service
+spec:
+  selector:
+    app:  valheim-dedicated
+  type:  NodePort
+  ports:
+  - name:  valheim-port-1
+    port:  2456
+    targetPort:  2456
+  - name:  valheim-port-2
+    port:  2457
+    targetPort:  2457
+  - name:  valheim-port-3
+    port:  2458
+    targetPort:  2458
