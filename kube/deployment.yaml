@@ -67,8 +67,8 @@ spec:
       volumes:
         - name: data
           persistentVolumeClaim:
-            claimName: temp
+            claimName: valheim_data_1
         - name: valheim
           persistentVolumeClaim:
-            claimName: temp2
+            claimName: valheim_data_2
       restartPolicy: Always
